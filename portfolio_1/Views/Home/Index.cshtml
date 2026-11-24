@@ -1,0 +1,38 @@
+﻿@using portfolio.Models
+@model List<CourseGroup>
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="hero">
+    <small>BSIT · UNIVERSITY OF BAGUIO</small>
+    <h1>My Portfolio</h1>
+    <p>The projects I made in my courses, from my first program to this website.</p>
+</div>
+
+@foreach (var g in Model)
+{
+    <h2 class="course-head">
+        <span class="code">@g.Course.Code</span> @g.Course.Title <small>@g.Course.Term</small>
+    </h2>
+    @if (!g.Projects.Any())
+    {
+        <p class="text-muted">No projects yet.</p>
+    }
+    <div class="cards">
+        @foreach (var p in g.Projects)
+        {
+            <a class="pcard" asp-action="Details" asp-route-id="@p.ProjectId">
+                @if (p.ThumbUrl != null)
+                {
+                    <img src="@p.ThumbUrl" alt="@p.Title" />
+                }
+                <div class="pbody">
+                    <h3>@p.Title</h3>
+                    <p>@p.Description</p>
+                    <small>@p.ImageCount images@(string.IsNullOrEmpty(p.VideoUrl) ? "" : " · video")</small>
+                </div>
+            </a>
+        }
+    </div>
+}

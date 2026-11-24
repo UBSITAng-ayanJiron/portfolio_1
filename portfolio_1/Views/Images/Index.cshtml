@@ -1,0 +1,35 @@
+﻿@using portfolio.Models
+@model Project
+@{
+    ViewData["Title"] = "Images";
+}
+<a asp-controller="Projects" asp-action="Index" class="text-decoration-none small">← All projects</a>
+<h2 class="mt-2">Images of "@Model.Title"</h2>
+
+<form asp-action="Add" method="post" class="d-flex gap-2 mb-4" style="max-width:720px">
+    <input type="hidden" name="projectId" value="@Model.ProjectId" />
+    <input class="form-control" name="imageUrl" required pattern="@Patterns.ImageUrl" placeholder="https://.../photo.png" />
+    <button class="btn btn-primary">Add</button>
+</form>
+
+@foreach (var img in Model.Images)
+{
+    <div class="d-flex align-items-center gap-2 mb-2" style="max-width:820px">
+        <img class="thumb" src="@img.ImageUrl" alt="" />
+        <form asp-action="Update" method="post" class="d-flex gap-2 flex-grow-1">
+            <input type="hidden" name="id" value="@img.ImageId" />
+            <input type="hidden" name="projectId" value="@Model.ProjectId" />
+            <input class="form-control" name="imageUrl" value="@img.ImageUrl" required pattern="@Patterns.ImageUrl" />
+            <button class="btn btn-outline-secondary">Save</button>
+        </form>
+        <form asp-action="Delete" method="post" onsubmit="return confirm('Delete this image?');">
+            <input type="hidden" name="id" value="@img.ImageId" />
+            <input type="hidden" name="projectId" value="@Model.ProjectId" />
+            <button class="btn btn-outline-danger">Delete</button>
+        </form>
+    </div>
+}
+@if (!Model.Images.Any())
+{
+    <p class="text-muted">No images yet.</p>
+}

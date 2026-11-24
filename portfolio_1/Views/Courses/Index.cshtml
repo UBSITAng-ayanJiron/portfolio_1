@@ -1,0 +1,29 @@
+﻿@using portfolio.Models
+@model List<Course>
+@{
+    ViewData["Title"] = "Courses";
+}
+<div class="d-flex justify-content-between align-items-start mb-3">
+    <div><h2 class="mb-0">Courses</h2><small class="text-muted">@Model.Count courses</small></div>
+    <a class="btn btn-primary" asp-action="Create">Add a course</a>
+</div>
+<table class="table align-middle bg-white">
+    <thead><tr><th>Code</th><th>Title</th><th>Term</th><th></th></tr></thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td><strong>@c.Code</strong></td>
+                <td>@c.Title</td>
+                <td>@c.Term</td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@c.CourseId">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@c.CourseId" method="post" class="d-inline"
+                          onsubmit="return confirm('Delete this course?');">
+                        <button class="btn btn-sm btn-outline-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

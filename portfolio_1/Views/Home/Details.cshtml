@@ -1,0 +1,25 @@
+﻿@using portfolio.Models
+@model Project
+@{
+    ViewData["Title"] = Model.Title;
+    // Turn a YouTube link into the address of an embeddable player.
+    var videoId = System.Text.RegularExpressions.Regex.Match(Model.VideoUrl ?? "", @"(?:v=|youtu\.be/|shorts/)([A-Za-z0-9_-]{11})").Groups[1].Value;
+}
+
+<a asp-action="Index" class="text-decoration-none small">← All projects</a>
+<div class="mt-2"><span class="fw-bold small">@Model.CourseCode</span> <span class="text-muted small">@Model.CourseTitle</span></div>
+<h1 class="fw-bold">@Model.Title</h1>
+<p class="lead fs-6">@Model.Description</p>
+<p class="text-muted small">Completed @Model.CompletedOn.ToString("MMMM d, yyyy")</p>
+
+<div class="gallery">
+    @foreach (var img in Model.Images)
+    {
+        <img src="@img.ImageUrl" alt="@Model.Title" />
+    }
+</div>
+
+@if (videoId != "")
+{
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/@videoId" title="Project demo" allowfullscreen></iframe>
+}

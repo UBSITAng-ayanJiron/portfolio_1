@@ -1,0 +1,35 @@
+﻿@using portfolio.Models
+@model List<Project>
+@{
+    ViewData["Title"] = "Projects";
+}
+<div class="d-flex justify-content-between align-items-start mb-3">
+    <div><h2 class="mb-0">Projects</h2><small class="text-muted">@Model.Count projects</small></div>
+    <a class="btn btn-primary" asp-action="Create">Add a project</a>
+</div>
+<table class="table align-middle bg-white">
+    <thead><tr><th></th><th>Title</th><th>Course</th><th>Images</th><th>Video</th><th></th></tr></thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@if (p.ThumbUrl != null) {
+                    <img class="thumb" src="@p.ThumbUrl" alt="" />
+                }
+            </td>
+            <td>@p.Title</td>
+            <td><strong>@p.CourseCode</strong></td>
+            <td>@p.ImageCount</td>
+            <td>@(string.IsNullOrEmpty(p.VideoUrl) ? "—" : "yes")</td>
+            <td class="text-end">
+                <a class="btn btn-sm btn-outline-secondary" asp-controller="Images" asp-action="Index" asp-route-projectId="@p.ProjectId">Images</a>
+                <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@p.ProjectId">Edit</a>
+                <form asp-action="Delete" asp-route-id="@p.ProjectId" method="post" class="d-inline"
+                      onsubmit="return confirm('Delete this project and its images?');">
+                    <button class="btn btn-sm btn-outline-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+    }
+</tbody>
+</table>
